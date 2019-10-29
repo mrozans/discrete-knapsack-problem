@@ -31,6 +31,8 @@ public class InputLoader {
     private Long getCapacity(String capacity) throws IOException {
         if (nonNumber(capacity))
             throw new IOException(String.format("Capacity must be number, but found: %s", capacity));
+        if (nonLong(capacity))
+            throw new IOException(String.format("Capacity must be Long, but found: %s", capacity));
         return Long.parseLong(capacity);
     }
 
@@ -41,9 +43,22 @@ public class InputLoader {
                     line));
         if (nonNumber(strings[0]))
             throw new IOException(String.format("weight must be number, but found: %s", strings[0]));
+        if (nonLong(strings[0]))
+            throw new IOException(String.format("weight must be Long, but found: %s", strings[0]));
         if (nonNumber(strings[1]))
             throw new IOException(String.format("value must be number, but found: %s", strings[1]));
+        if (nonLong(strings[1]))
+            throw new IOException(String.format("value must be Long, but found: %s", strings[1]));
         return new KnapsackObject(Long.parseLong(strings[0]), Long.parseLong(strings[1]));
+    }
+
+    private boolean nonLong(String string) {
+        try {
+            Long d = Long.parseLong(string);
+        } catch (NumberFormatException | NullPointerException nfe) {
+            return true;
+        }
+        return false;
     }
 
     private boolean nonNumber(String string) {
@@ -55,6 +70,7 @@ public class InputLoader {
         StringBuilder stringBuilder = new StringBuilder();
         while (scanner.hasNextLine())
             stringBuilder.append(scanner.nextLine()).append("\n");
+        scanner.close();
         return stringBuilder.toString();
     }
 
