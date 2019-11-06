@@ -1,9 +1,12 @@
 package pl.edu.pw.elka.pszt.knapsack;
 
 import lombok.AllArgsConstructor;
-import pl.edu.pw.elka.pszt.knapsack.model.InputKnapsackObjects;
+import pl.edu.pw.elka.pszt.knapsack.algorithm.Algorithm;
+import pl.edu.pw.elka.pszt.knapsack.algorithm.genetic.Genetic;
+import pl.edu.pw.elka.pszt.knapsack.model.KnapsackObjects;
 import pl.edu.pw.elka.pszt.knapsack.model.InputLoader;
-import pl.edu.pw.elka.pszt.knapsack.model.ValidateInputKnapsackObjects;
+import pl.edu.pw.elka.pszt.knapsack.model.Settings;
+import pl.edu.pw.elka.pszt.knapsack.model.ValidateKnapsackObjects;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -12,30 +15,37 @@ import java.util.Arrays;
 
 @AllArgsConstructor
 public class Knapsack {
-    private final String inputPath, outputPath;
+    private final String inputPath, outputPath, settingsPath;
 
-    public void run() throws IOException {
-        InputKnapsackObjects iko = loadInput();
+    public void run() throws IOException, CloneNotSupportedException {
+        KnapsackObjects iko = loadInput();
+        Settings settings = loadSettings();
         validate(iko);
-        String result = calculate(iko);
+        String result = calculate(iko,settings);
         saveOutput(result);
     }
 
-    private InputKnapsackObjects loadInput() throws IOException {
+    private Settings loadSettings() {
+        Settings settings = new Settings();
+        settings.initDataFromFile(settingsPath);
+        return settings;
+    }
+
+    private KnapsackObjects loadInput() throws IOException {
         return new InputLoader(inputPath).load();
     }
 
-    private void validate(InputKnapsackObjects iko) throws IOException {
-        if (ValidateInputKnapsackObjects.checkCapacity(iko))
+    private void validate(KnapsackObjects iko) throws IOException {
+        if (!ValidateKnapsackObjects.checkCapacity(iko))
             throw new IOException("Error in capacity. Capacity must be integer >= 0, but is: " + iko.getKnapsackCapacity());
-        if (ValidateInputKnapsackObjects.checkItems(iko))
+        if (!ValidateKnapsackObjects.checkItems(iko))
             throw new IOException("Error in items. Value and weight for each item must be integer. All items: " +
-                    Arrays.toString(iko.getKnapsackObjects().toArray()));
+                    Arrays.toString(iko.getItems().toArray()));
     }
 
-    private String calculate(InputKnapsackObjects iko) {
-        //ToDo body;
-        return null;
+    private String calculate(KnapsackObjects iko, Settings settings) throws CloneNotSupportedException {
+        Algorithm algorithm = new Genetic(iko,settings);
+        return algorithm.calculate();
     }
 
     private void saveOutput(String string) throws IOException {

@@ -48,12 +48,12 @@ class InputLoaderTest {
             test(loadFile(path).split("\n"), new InputLoader(path).load());
         }
 
-        void test(String[] split, InputKnapsackObjects iko) {
+        void test(String[] split, KnapsackObjects iko) {
             assertEquals(Long.parseLong(split[0]), iko.getKnapsackCapacity());
-            assertEquals(split.length - 1, iko.getKnapsackObjects().size());
-            List<KnapsackObject> knapsackObjects = iko.getKnapsackObjects();
-            for (int i = 0; i < knapsackObjects.size(); i++) {
-                KnapsackObject e = knapsackObjects.get(i);
+            assertEquals(split.length - 1, iko.getItems().size());
+            List<Item> items = iko.getItems();
+            for (int i = 0; i < items.size(); i++) {
+                Item e = items.get(i);
                 String[] lineValues = split[i + 1].split(" ");
                 assertEquals(Long.parseLong(lineValues[0]), e.getWeight());
                 assertEquals(Long.parseLong(lineValues[1]), e.getValue());
@@ -102,12 +102,13 @@ class InputLoaderTest {
         @Test
         @DisplayName("double in weight")
         void test7() {
-            test("value must be Long, but found: 123.2",PATH + "exceptions/test7.txt");
+            test("value must be Long, but found: 123.2", PATH + "exceptions/test7.txt");
         }
+
         @Test
         @DisplayName("double in weight")
         void test8() {
-            test("Capacity must be Long, but found: 10.1",PATH + "exceptions/test8.txt");
+            test("Capacity must be Long, but found: 10.1", PATH + "exceptions/test8.txt");
         }
 
         private void test(String expected, String path) {
