@@ -6,10 +6,13 @@ import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Knapsack objects. Contains knapsack capacity and items.
+ */
 @RequiredArgsConstructor
 @Getter
 public class KnapsackObjects {
-    public final Long knapsackCapacity;
+    private final Long knapsackCapacity;
     private final List<Item> items = new ArrayList<>();
 
     public void add(Item item) {
