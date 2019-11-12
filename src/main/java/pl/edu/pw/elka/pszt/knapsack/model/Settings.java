@@ -10,9 +10,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/**
- * The type Settings.
- */
 @Getter @Setter
 public class Settings extends FileGetter{
     private final List<Setting> settingList;
@@ -22,7 +19,7 @@ public class Settings extends FileGetter{
         settingList.add(new Setting("chromosomePerMille", 100D));//‰ * 1000
         settingList.add(new Setting("genChance", calculateGenProbability(100D)));//0 - 1
         settingList.add(new Setting("dominatorPercentage", 10D));//%
-        settingList.add(new Setting("iterations", 100L));
+        settingList.add(new Setting("iterations", 95L));
         settingList.add(new Setting("generateChart",true));
         settingList.add(new Setting("printOldPopulations", true));
     }
@@ -56,11 +53,6 @@ public class Settings extends FileGetter{
         }
     }
 
-    /**
-     * Init data from file.
-     *
-     * @param inputPath the input path
-     */
     public void initDataFromFile(String inputPath){
         if (Objects.isNull(inputPath))
             return;
@@ -85,23 +77,19 @@ public class Settings extends FileGetter{
     private void setValue(String key, String value){
         switch (key){
             case "genChance"://double
-            case "dominatorPercentage": {
+            case "dominatorPercentage":
+            case "chromosomePerMille":{
                 if (!NumberUtils.isParsable(value))
                     return;
                 double val = Double.parseDouble(value);
                 if (val < 0)
                     return;
+                if(key.equals("chromosomePerMille")){
+                    setSetting(key, calculateGenProbability(val));
+                } else {
+                    setSetting(key, val);
+                }
                 setSetting(key, val);
-            }
-            break;
-            case "chromosomePerMille":{
-                if(!NumberUtils.isParsable(value))
-                    return;
-                double val = Double.parseDouble(value);
-                if(val < 0)
-                    return;
-                setSetting(key, val);
-                setSetting("chromosomePerMille", calculateGenProbability(val));
             }
             break;
             case "iterations"://long
@@ -117,19 +105,9 @@ public class Settings extends FileGetter{
             case "generateChart"://boolean
             case "printOldPopulations":
             {
-                if(isBooleanParsable(value)){
-                    setSetting(key,Boolean.parseBoolean(value));
-                }
+                setSetting(key,Boolean.parseBoolean(value));
             }
             break;
-        }
-    }
-    private boolean isBooleanParsable(String value){
-        try{
-            Boolean.parseBoolean(value);
-            return true;
-        }catch (Exception e){
-            return false;
         }
     }
     private boolean isLongParsable(String value){

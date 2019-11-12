@@ -1,4 +1,4 @@
-package pl.edu.pw.elka.pszt.knapsack.algorithm.genetic.model;
+package pl.edu.pw.elka.pszt.knapsack.algorithm.genetic.population;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -9,9 +9,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-/**
- * The type Chromosome.
- */
 @Getter
 @ToString
 @EqualsAndHashCode
@@ -23,17 +20,13 @@ public class Chromosome implements Cloneable {
         gens.add(gen);
     }
 
-    /**
-     * calculates volume of chromosome
-     *
-     * @return the int
-     */
     public int volume() {
         return getPresentGens().stream()
                 .mapToInt(e -> Math.toIntExact(e.getVolume()))
                 .sum();
     }
 
+    @SuppressWarnings("MethodDoesntCallSuperMethod")
     @Override
     public Object clone() throws CloneNotSupportedException {
         Chromosome chromosome = new Chromosome();
@@ -43,11 +36,6 @@ public class Chromosome implements Cloneable {
         return chromosome;
     }
 
-    /**
-     * method decreases chromosome volume while it is bigger than maxVolume
-     *
-     * @param maxVolume the max volume
-     */
     public void fix(final int maxVolume) {
         Random random = new Random(System.currentTimeMillis());
         List<Gen> presentGens = this.gens.stream().filter(Gen::isPresent).collect(Collectors.toList());
@@ -61,7 +49,7 @@ public class Chromosome implements Cloneable {
     String listItems() {
         StringBuilder out = new StringBuilder();
         for (Gen gen : gens) {
-            if (gen.isPresent) {
+            if (gen.isPresent()) {
                 out.append(gen.getVolume()).append(" ").append(gen.getValue()).append("\n");
             }
         }
@@ -72,31 +60,14 @@ public class Chromosome implements Cloneable {
         return gens.size();
     }
 
-    /**
-     * Gets gen.
-     *
-     * @param index the search index
-     * @return the gen
-     */
     Gen getGen(Long index) {
         return gens.get(Math.toIntExact(index));
     }
 
-    /**
-     * method replaces old gen with new gen.
-     *
-     * @param index the index of old gen
-     * @param newGen   the new gen
-     */
     void changeGen(long index, Gen newGen) {
         gens.set((int) index, newGen);
     }
 
-    /**
-     * method calculates fitness of chromosome.
-     *
-     * @return the int
-     */
     int fitness() {
         return getPresentGens().stream()
                 .mapToInt(e -> Math.toIntExact(e.getValue()))

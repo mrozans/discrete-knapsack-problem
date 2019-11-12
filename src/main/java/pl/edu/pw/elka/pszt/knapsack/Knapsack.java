@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import pl.edu.pw.elka.pszt.knapsack.algorithm.Algorithm;
 import pl.edu.pw.elka.pszt.knapsack.algorithm.genetic.Genetic;
-import pl.edu.pw.elka.pszt.knapsack.algorithm.genetic.model.Population;
+import pl.edu.pw.elka.pszt.knapsack.algorithm.genetic.population.Population;
 import pl.edu.pw.elka.pszt.knapsack.model.*;
 
 import javax.swing.*;
@@ -14,21 +14,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * The type Knapsack.
- */
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class Knapsack {
     private final String inputPath, outputPath;
     private String settingsPath;
 
-    /**
-     * Run all program functionality.
-     *
-     * @throws IOException                the io exception
-     * @throws CloneNotSupportedException the clone not supported exception
-     */
     public void run() throws IOException, CloneNotSupportedException {
         KnapsackObjects knapsackObjects = loadInput();
         Settings settings = loadSettings(knapsackObjects);
