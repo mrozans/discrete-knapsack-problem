@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.Objects;
 // example of program arguments file: example_input_files/inputExample.txt example_input_files/out.txt
 // example of program arguments with settings file: example_input_files/inputExample.txt example_input_files/out.txt example_input_files/settings.txt
-class Application {
+public class Application {
     private static final int NUMBER_OF_REQUIRED_ARGS = 2;
     private static final int NUMBER_OF_OPTIONAL_ARGS = 1;
     public static void main(String[] args) {

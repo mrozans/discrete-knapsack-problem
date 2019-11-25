@@ -1,4 +1,3 @@
-dominatorPercentage = 75
-iterations = 100
-initialPopulation = 10
-printOldPopulations = false
+printOldPopulations = true
+generateChart = true
+initialPopulation = 50

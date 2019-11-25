@@ -16,10 +16,9 @@ public class Settings extends FileGetter{
     public Settings(final long initialPopulation){
         this.settingList = new ArrayList<>();
         settingList.add(new Setting("initialPopulation",initialPopulation));
-        settingList.add(new Setting("chromosomePerMille", 100D));//‰ * 1000
         settingList.add(new Setting("genChance", calculateGenProbability(100D)));//0 - 1
-        settingList.add(new Setting("dominatorPercentage", 10D));//%
-        settingList.add(new Setting("iterations", 95L));
+        settingList.add(new Setting("dominatorPercentage", 95D));//%
+        settingList.add(new Setting("iterations", 100L));
         settingList.add(new Setting("generateChart",true));
         settingList.add(new Setting("printOldPopulations", true));
     }
